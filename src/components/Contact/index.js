@@ -4,9 +4,17 @@ import { validateEmail } from '../../utils/helpers';
 function ContactForm() {
     //initial state is an empty string
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
-    const { name, email, message } = formState;
-    //initial state is an empty string
     const [errorMessage, setErrorMessage] = useState('');
+    const { name, email, message } = formState;
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!errorMessage) {
+            //e.target.name refers to the name attribute of the form element
+            setFormState({ ...formState, [e.target.name]: e.target.value })
+        }
+        console.log('Form', formState);
+    }
 
     function handleChange(e) {
         if (e.target.name === 'email') {
@@ -25,26 +33,11 @@ function ContactForm() {
                 setErrorMessage('');
             }
         }
-
-        
-
-        if (!errorMessage) {
-            //e.target.name refers to the name attribute of the form element
-            setFormState({ ...formState, [e.target.name]: e.target.value })
-        }
-
-
-
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        console.log(formState);
     }
 
     return (
         <section>
-            <h1>Contact me</h1>
+            <h1 data-testid="h1tag">Contact me</h1>
             <form id="contact-form" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="name">Name:</label>
@@ -58,14 +51,14 @@ function ContactForm() {
                     <label htmlFor="message">Message:</label>
                     <textarea name="message" rows="5" defaultValue={message} onBlur={handleChange} />
                     {errorMessage && (
-  <div>
-    <p className="error-text">{errorMessage}</p>
-  </div>
-)}
+                        <div>
+                            <p className="error-text">{errorMessage}</p>
+                        </div>
+                    )}
                 </div>
-                
-                <button type="submit">Submit</button>
-                  
+
+                <button data-testid="button" type="submit">Submit</button>
+
 
             </form>
         </section>
